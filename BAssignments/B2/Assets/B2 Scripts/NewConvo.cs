@@ -37,8 +37,9 @@ public class NewConvo : MonoBehaviour {
     //
     protected Node conversationTree(Val<Vector3> P1Pos, Val<Vector3> P2Pos, Val<Vector3> P3Pos)
     {
-        return new Sequence(OrientAndWave(P1Pos, P2Pos), WalkAndTalk(P1Pos, P2Pos), 
-            new SequenceParallel( DeltreseWalkTo(DeltreseGoTo) , ThatDamnDeltrese(P3Pos)),
+        return new Sequence(OrientAndWave(P1Pos, P2Pos), WalkAndTalk(P1Pos, P2Pos),
+            new DecoratorForceStatus(RunStatus.Success, 
+                new SequenceParallel(DeltreseWalkTo(DeltreseGoTo), ThatDamnDeltrese(P3Pos))),
                 CallDeltrese(P1Pos, P2Pos, P3Pos)
             );
     }
@@ -103,7 +104,7 @@ public class NewConvo : MonoBehaviour {
 
     protected Node ThatDamnDeltrese(Val<Vector3> P3Pos)
     {        
-        return new SequenceParallel( person1.GetComponent<BehaviorMecanim>().Node_HeadLook(P3Pos) , 
+        return new Sequence( person1.GetComponent<BehaviorMecanim>().Node_HeadLook(P3Pos) , 
                                      person2.GetComponent<BehaviorMecanim>().Node_HeadLook(P3Pos) );
     }
 
